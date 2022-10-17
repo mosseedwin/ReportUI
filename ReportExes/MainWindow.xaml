@@ -1,0 +1,53 @@
+﻿<Window x:Class="Report.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Report"
+        mc:Ignorable="d"
+        Title="Generador de reportes" Height="420" Width="800"
+        FontSize="14" ResizeMode="CanResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="5" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="0,0,5,0" Content="Configuración de paises" VerticalAlignment="Center" Width="Auto" HorizontalAlignment="Right" Click="Countries_Click"/>
+            <Button Margin="5,0,0,0" Content="Configuración de categorias" VerticalAlignment="Center" Width="Auto" HorizontalAlignment="Right" Click="Categories_Click"/>
+        </StackPanel>
+        <Label Margin="5" Grid.Row="1" Grid.Column="0" Content="Archivo de eventos:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox Margin="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding EventsFile, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="1"  Grid.Column="2" Content="..." HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="EventsFileSearcher"/>
+        <Label Margin="5" Grid.Row="2" Grid.Column="0" Content="Archivo de incidencias:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox Margin="5" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding IncidentsFile, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="2"  Grid.Column="2" Content="..." HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="IncidentsFileSearcher"/>
+        <Label Margin="5" Grid.Row="3" Grid.Column="0" Content="Archivo de cambios:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox Margin="5" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding ChangesFile, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="3"  Grid.Column="2" Content="..." HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="ChangesFileSearcher"/>
+        <Label Margin="5" Grid.Row="4" Grid.Column="0" Content="Archivo de disponibilidad:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox Margin="5" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding AvailabilityFile, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="4"  Grid.Column="2" Content="..." HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="AvailabilityFileSearcher"/>
+        <Label Margin="5" Grid.Row="5" Grid.Column="0" Content="Archivo de salida:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox Margin="5" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding OutputFile, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="5"  Grid.Column="2" Content="..." HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="OutputFileSearcher"/>
+        <Label Margin="5" Grid.Row="6" Grid.Column="0" Content="Fecha inicial: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <DatePicker Margin="5" Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" SelectedDate="{Binding Initial, Mode=TwoWay}"/>
+        <Label Margin="5" Grid.Row="7" Grid.Column="0" Content="Fecha final: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <DatePicker Margin="5" Grid.Row="7" Grid.Column="1" VerticalAlignment="Top" SelectedDate="{Binding Final, Mode=TwoWay}"/>
+        <Button Margin="5" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Content="Iniciar" VerticalAlignment="Top" Width="Auto" HorizontalAlignment="Right" Click="Start_Click"/>
+    </Grid>
+</Window>
