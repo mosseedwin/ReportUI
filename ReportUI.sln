@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32611.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report", "ReportExes\Report.csproj", "{7DBCC3A6-A16D-4A66-989C-02D95F6A7DF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventReport", "EventReport\EventReport.csproj", "{216CD01F-371F-40EE-9184-C8AE95CD411C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7DBCC3A6-A16D-4A66-989C-02D95F6A7DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DBCC3A6-A16D-4A66-989C-02D95F6A7DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DBCC3A6-A16D-4A66-989C-02D95F6A7DF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{216CD01F-371F-40EE-9184-C8AE95CD411C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{216CD01F-371F-40EE-9184-C8AE95CD411C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{216CD01F-371F-40EE-9184-C8AE95CD411C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{216CD01F-371F-40EE-9184-C8AE95CD411C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

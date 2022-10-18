@@ -1,0 +1,65 @@
+﻿<Window x:Class="Report.CategoriesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Report"
+        mc:Ignorable="d"
+        Title="Configurar paises" Height="450" Width="800"
+        FontSize="14" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="5" Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5,5,5,5" Content="+" Width="20" Click="Add"/>
+                <Button Margin="5,5,0,5" Content="-" Width="20" Click="Remove"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" Name="CountriesUI" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}"
+                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="País" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Margin="5" Grid.Row="0" Grid.Column="0" Content="Nombre" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <TextBox Margin="5" Grid.Row="0" Grid.Column="1" Text="{Binding Selected.Name}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Margin="5,5,5,0" Content="+" Width="20" Click="AddPrefix"/>
+                <Button Margin="5,5,5,0" Content="-" Width="20" Click="RemovePrefix"/>
+            </StackPanel>
+            <DataGrid Name="PrefixesUI" Margin="5,5,5,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+                      ItemsSource="{Binding Selected.Prefixes}" CanUserDeleteRows="False"
+                      AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Prefijo" Binding="{Binding Value}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="5" Content="Guardar" Width="Auto" Click="Save"/>
+            <Button Margin="5" Content="Cancelar" Width="Auto" Click="Cancel"/>
+        </StackPanel>
+    </Grid>
+</Window>
