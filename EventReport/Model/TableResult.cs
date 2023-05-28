@@ -13,11 +13,11 @@ namespace Report
 
         public string FirstOccurrence { get; }
 
-        public string Summary{ get; }
+        public string Summary { get; }
 
         public string Category { get; }
 
-        public string EventCode { get; }
+        public string Subcategory { get; }
 
         public int? OriginalSeverity { get; }
 
@@ -47,14 +47,17 @@ namespace Report
 
         public string GEO { get; }
 
-        public TableResult(string[] values, string category, string eventCode)
+        public string Country { get; }
+
+        public TableResult(string country, string[] values, string category, string subcategory)
         {
+            Country = country;
             InternalTicketId = GetInt(values[1]);
             CustomerName = values[2];
             FirstOccurrence = GetDateTime(values[3]);
             Summary = values[4];
             Category = category;
-            EventCode = eventCode;
+            Subcategory = subcategory;
             OriginalSeverity = GetInt(values[5]);
             Severity = GetInt(values[6]);
             LastOccurrence = GetDateTime(values[7]);

@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -77,42 +75,8 @@ namespace Report
                 return;
             }
 
-            Dictionary<string, Country> countriesByName = new Dictionary<string, Country>();
-            Dictionary<string, string> temp = new Dictionary<string, string>()
-            {
-                { string.Empty, string.Empty }
-            };
-            foreach (Country country in countries)
-            {
-                countriesByName[country.Name] = country;
-                foreach (string prefix in country.Prefixes)
-                {
-                    temp[prefix] = country.Name;
-                }
-            }
-
-            Dictionary<string, string> countryPrefixes = new Dictionary<string, string>();
-            string[] keys = temp.Keys.OrderByDescending(a => a.Length).ToArray();
-            foreach (string key in keys)
-            {
-                countryPrefixes[key] = temp[key];
-            }
-
-            temp = new Dictionary<string, string>();
-            foreach (Category category in categories)
-            {
-                foreach (string prefix in category.Prefixes)
-                {
-                    temp[prefix] = category.Key;
-                }
-            }
-
-            Dictionary<string, string> categoryPrefixes = new Dictionary<string, string>();
-            keys = temp.Keys.OrderByDescending(a => a.Length).ToArray();
-            foreach (string key in keys)
-            {
-                categoryPrefixes[key] = temp[key];
-            }
+            Dictionary<string, string> countryPrefixes = GetCountryPrefixes(countries);
+            Dictionary<string, Tuple<string, string>> categoryPrefixes = GetCategoryPrefixes(categories);
 
             if (!VerificeContent(out string eventsContent))
             {
@@ -130,6 +94,48 @@ namespace Report
             MessageBox.Show("Finalizado", "", MessageBoxButton.OK);
         }
 
+        private static Dictionary<string, string> GetCountryPrefixes(Countries countries)
+        {
+            Dictionary<string, string> temp = new Dictionary<string, string>()
+            {
+                { string.Empty, string.Empty }
+            };
+            foreach (Country country in countries)
+            {
+                foreach (string prefix in country.Prefixes)
+                {
+                    temp[prefix] = country.Name;
+                }
+            }
+            Dictionary<string, string> countryPrefixes = new Dictionary<string, string>();
+            foreach (string key in temp.Keys.OrderByDescending(a => a.Length).ToArray())
+            {
+                countryPrefixes[key] = temp[key];
+            }
+            return countryPrefixes;
+        }
+
+        private static Dictionary<string, Tuple<string, string>> GetCategoryPrefixes(Categories categories)
+        {
+            Dictionary<string, Tuple<string, string>> temp = new Dictionary<string, Tuple<string, string>>()
+            {
+                { string.Empty, new Tuple<string, string>(string.Empty, string.Empty) }
+            };
+            foreach (Category category in categories)
+            {
+                foreach (string prefix in category.Prefixes)
+                {
+                    temp[prefix] = new Tuple<string, string>(category.Name, category.Subcategory);
+                }
+            }
+            Dictionary<string, Tuple<string, string>> categoryPrefixes = new Dictionary<string, Tuple<string, string>>();
+            foreach (string key in temp.Keys.OrderByDescending(a => a.Length).ToArray())
+            {
+                categoryPrefixes[key] = temp[key];
+            }
+            return categoryPrefixes;
+        }
+
         private bool VerificeContent(out string eventsContent)
         {
             if (!GetNewContent(EventsFile, EVENT_TOKEN, out string _, out eventsContent))
@@ -140,10 +146,10 @@ namespace Report
             return true;
         }
 
-        private bool VerificeServers(Dictionary<string, string> countryPrefixes, Dictionary<string, string> categoryPrefixes, string eventsContent, out List<TableResult> eventsGrouped)
+        private bool VerificeServers(Dictionary<string, string> countryPrefixes, Dictionary<string, Tuple<string, string>> categoryPrefixes, string eventsContent, out List<TableResult> eventsGrouped)
         {
             List<string> serverNotFound = new List<string>();
-            var groups = GroupByServerName(countryPrefixes, eventsContent, EVENT_TOKEN_COUNT, EVENT_SERVER_INDEX, serverNotFound);
+            Dictionary<string, List<string[]>> groups = GroupByServerName(countryPrefixes, eventsContent, EVENT_TOKEN_COUNT, EVENT_SERVER_INDEX, serverNotFound);
             if (serverNotFound.Count > 0)
             {
                 string text = "Servidores sin país.\n";
@@ -159,66 +165,25 @@ namespace Report
                     return false;
                 }
             }
-
             eventsGrouped = new List<TableResult>();
-            foreach (var tuple in groups)
+            foreach (KeyValuePair<string, List<string[]>> tuple in groups)
             {
                 string countryName = tuple.Key;
-                foreach (var value in tuple.Value)
+                foreach (string[] value in tuple.Value)
                 {
                     string summary = value[EVENT_SUMMARY_INDEX];
-                    string prefix = null;
-                    foreach (var categoryTuple in categoryPrefixes)
+                    Tuple<string, string> prefix = new Tuple<string, string>(string.Empty, string.Empty);
+                    foreach (KeyValuePair<string, Tuple<string, string>> categoryTuple in categoryPrefixes)
                     {
-                        if (summary.Contains(categoryTuple.Key))
+                        string key = categoryTuple.Key;
+                        if (summary.Contains(key))
                         {
                             prefix = categoryTuple.Value;
                             break;
                         }
                     }
-                    if (prefix != null)
-                    {
-                        TableResult result = new TableResult(value, prefix, null);
-                        eventsGrouped.Add(result);
-                        continue;
-                    }
-                    if (!summary.Contains("Win_EventLogs:"))
-                    {
-                        TableResult result = new TableResult(value, prefix, null);
-                        eventsGrouped.Add(result);
-                        continue;
-                    }
-                    int index1 = summary.IndexOf("[[");
-                    int index2 = summary.IndexOf("[...[");
-                    string subString;
-                    if (index1 != -1)
-                    {
-                        subString = summary.Substring(index1 + 2);
-                    }
-                    else if (index2 != -1)
-                    {
-                        subString = summary.Substring(index2 + 5);
-                    }
-                    else
-                    {
-                        subString = summary;
-                    }
-                    string[] info = subString.Split(':');
-                    if (info.Length == 1)
-                    {
-                        TableResult result = new TableResult(value, "EVENT LOG", info[0]);
-                        eventsGrouped.Add(result);
-                    }
-                    else if (info.Length == 2)
-                    {
-                        TableResult result = new TableResult(value, "EVENT LOG", info[0] + ":" + info[1]);
-                        eventsGrouped.Add(result);
-                    }
-                    else if (info.Length >= 3)
-                    {
-                        TableResult result = new TableResult(value, "EVENT LOG", info[0] + ":" + info[1] + ":" + info[2]);
-                        eventsGrouped.Add(result);
-                    }
+                    TableResult result = new TableResult(countryName, value, prefix.Item1, prefix.Item2);
+                    eventsGrouped.Add(result);
                 }
             }
             return true;

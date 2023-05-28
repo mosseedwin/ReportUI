@@ -48,7 +48,8 @@ namespace Report
             {
                 Category category = new Category()
                 {
-                    Key = categoryViewModel.Name,
+                    Name = categoryViewModel.Name,
+                    Subcategory = categoryViewModel.Subcategory,
                 };
                 foreach (PrefixViewModel prefixViewModel in categoryViewModel.Prefixes)
                 {

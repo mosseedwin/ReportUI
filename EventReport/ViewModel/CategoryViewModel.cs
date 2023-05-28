@@ -22,6 +22,38 @@ namespace Report
             {
                 _Name = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FullName));
+            }
+        }
+
+        private string _Subcategory;
+
+        public string Subcategory
+        {
+            get { return _Subcategory; }
+            set
+            {
+                _Subcategory = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(FullName));
+            }
+        }
+
+        public string FullName
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Subcategory))
+                {
+                    return Name;
+                }
+                else
+                {
+                    return Name + " : " + Subcategory;
+                }
+            }
+            set
+            {
             }
         }
 
@@ -37,14 +69,16 @@ namespace Report
         {
         }
 
-        public CategoryViewModel(string name)
+        public CategoryViewModel(string category, string subcategory)
         {
-            Name = name;
+            Name = category;
+            Subcategory = subcategory;
         }
 
         public CategoryViewModel(Category category)
         {
-            Name = category.Key;
+            Name = category.Name;
+            Subcategory = category.Subcategory;
             foreach (string item in category.Prefixes)
             {
                 Prefixes.Add(new PrefixViewModel(item));

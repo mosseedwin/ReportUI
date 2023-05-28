@@ -5,11 +5,13 @@ namespace Report
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class NameWindow : Window
+    public partial class NewCategoryWindow : Window
     {
-        public string InstanceName { get; set; }
+        public string Category { get; set; }
 
-        internal NameWindow()
+        public string Subcategory { get; set; }
+
+        internal NewCategoryWindow()
         {
             InitializeComponent();
             DataContext = this;

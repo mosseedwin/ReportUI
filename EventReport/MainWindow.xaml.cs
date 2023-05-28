@@ -56,10 +56,10 @@ namespace Report
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "Archivo csv|*.csv";
-try
-{
+            try
+            {
                 if (!string.IsNullOrWhiteSpace(MainViewModel.EventsFile))
-{
+                {
                     string directoryName = Path.GetDirectoryName(MainViewModel.EventsFile);
                     if (Directory.Exists(directoryName))
                     {

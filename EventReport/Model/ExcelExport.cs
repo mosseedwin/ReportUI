@@ -1,6 +1,6 @@
-﻿using NPOI.SS.UserModel;
+﻿using NPOI;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using NPOI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ namespace Report
     [Serializable]
     internal class ExcelExport
     {
-        XSSFWorkbook Book { get; set; }
+        private XSSFWorkbook Book { get; set; }
 
         public ExcelExport()
         {
@@ -56,9 +56,10 @@ namespace Report
                     new Tuple<object, CellType>("Article Id", CellType.String),
                     new Tuple<object, CellType>("Queuename", CellType.String),
                     new Tuple<object, CellType>("GEO", CellType.String),
+                    new Tuple<object, CellType>("Country", CellType.String),
                 }
             };
-            foreach (var record in summary)
+            foreach (TableResult record in summary)
             {
                 values.Add(new Tuple<object, CellType>[]
                 {
@@ -67,7 +68,7 @@ namespace Report
                     new Tuple<object, CellType>(record.FirstOccurrence, CellType.String),
                     new Tuple<object, CellType>(record.Summary, CellType.String),
                     new Tuple<object, CellType>(record.Category, CellType.String),
-                    new Tuple<object, CellType>(record.EventCode, CellType.String),
+                    new Tuple<object, CellType>(record.Subcategory, CellType.String),
                     new Tuple<object, CellType>(record.OriginalSeverity, CellType.Numeric),
                     new Tuple<object, CellType>(record.Severity, CellType.Numeric),
                     new Tuple<object, CellType>(record.LastOccurrence, CellType.String),
@@ -82,6 +83,7 @@ namespace Report
                     new Tuple<object, CellType>(record.ArticleId, CellType.Numeric),
                     new Tuple<object, CellType>(record.Queuename, CellType.String),
                     new Tuple<object, CellType>(record.GEO, CellType.String),
+                    new Tuple<object, CellType>(record.Country, CellType.String),
                 });
             }
             AddValues(sheet, values);

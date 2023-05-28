@@ -5,11 +5,11 @@ namespace Report
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class CategoriesWindow : Window
+    public partial class CountriesWindow : Window
     {
-        private CategoriesViewModel ViewModel { get; }
+        private CountriesViewModel ViewModel { get; }
 
-        internal CategoriesWindow(CategoriesViewModel dataContext)
+        internal CountriesWindow(CountriesViewModel dataContext)
         {
             InitializeComponent();
             ViewModel = dataContext;
@@ -18,16 +18,17 @@ namespace Report
 
         private void Add(object sender, RoutedEventArgs e)
         {
-            NameWindow nameWindow = new NameWindow();
-            if (nameWindow.ShowDialog() == true)
+            NewCountryWindow countryWindow = new NewCountryWindow();
+            if (countryWindow.ShowDialog() == true)
             {
-                ViewModel.Items.Add(new CategoryViewModel(nameWindow.InstanceName));
+                Country country = new Country() { Name = countryWindow.InstanceName };
+                ViewModel.Items.Add(new CountryViewModel(country));
             }
         }
 
         private void Remove(object sender, RoutedEventArgs e)
         {
-            if (CountriesUI.SelectedItem is CategoryViewModel item)
+            if (CountriesUI.SelectedItem is CountryViewModel item)
             {
                 ViewModel.Items.Remove(item);
             }
@@ -35,7 +36,7 @@ namespace Report
 
         private void AddPrefix(object sender, RoutedEventArgs e)
         {
-            if (CountriesUI.SelectedItem is CategoryViewModel item)
+            if (CountriesUI.SelectedItem is CountryViewModel item)
             {
                 PrefixViewModel prefixViewModel = new PrefixViewModel();
                 item.Prefixes.Add(prefixViewModel);
@@ -44,7 +45,7 @@ namespace Report
 
         private void RemovePrefix(object sender, RoutedEventArgs e)
         {
-            if (CountriesUI.SelectedItem is CategoryViewModel item)
+            if (CountriesUI.SelectedItem is CountryViewModel item)
             {
                 if (PrefixesUI.SelectedItem is PrefixViewModel prefixViewModel)
                 {
