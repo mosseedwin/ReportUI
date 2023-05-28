@@ -41,7 +41,7 @@ namespace Report
                     new Tuple<object, CellType>("First Occurrence", CellType.String),
                     new Tuple<object, CellType>("Summary", CellType.String),
                     new Tuple<object, CellType>("Category", CellType.String),
-                    new Tuple<object, CellType>("EventCode", CellType.String),
+                    new Tuple<object, CellType>("Subcategory", CellType.String),
                     new Tuple<object, CellType>("Original Severity", CellType.String),
                     new Tuple<object, CellType>("Severity", CellType.String),
                     new Tuple<object, CellType>("Last Occurrence", CellType.String),
